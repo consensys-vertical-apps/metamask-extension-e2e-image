@@ -33,8 +33,10 @@ jobs:
         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@multi-ecr-support
         with:
           image_tag: ${{ needs.create-tag.outputs.tag }}
+          aws_region: us-east-1
+          registry_type: public
+          ecr_repository: y2l1v8k6/metamask-core-staging/metamask-extension-e2e
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
-          public_ecr_repository: y2l1v8k6/metamask-core-staging/metamask-extension-e2e
 
   push-prod:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -49,7 +51,9 @@ jobs:
         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@ecr-public
         with:
           image_tag: ${{ github.ref_name }}
+          aws_region: us-east-1
+          registry_type: public
           aws_role: arn:aws:iam::363762752069:role/ecr-github-metamask-core-metamask-extension-e2e
-          public_ecr_repository: public.ecr.aws/a6f6j9d3/metamask-core/metamask-extension-e2e
+          ecr_repository: a6f6j9d3/metamask-core/metamask-extension-e2e
 
 
