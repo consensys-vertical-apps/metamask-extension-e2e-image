@@ -20,6 +20,23 @@ jobs:
     if: github.ref == 'refs/heads/init'
     uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/create-eph-tag.yml@v0.60.0
 
+  push-uat-private:
+    if: github.ref == 'refs/heads/init'
+    runs-on: ubuntu-latest
+    environment: uat
+    needs: [build, create-tag]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Push to Public ECR (Ephemeral Tag)
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@multi-ecr-support
+        with:
+          image_tag: ${{ needs.create-tag.outputs.tag }}
+          aws_region: us-east-2
+          ecr_repository: mmc/uat/metamask-extension-e2e-private
+          aws_role: arn:aws:iam::722264665990:role/ecr-github-mmc-uat-metamask-extension-e2e-private
+
   push-uat:
     if: github.ref == 'refs/heads/init'
     runs-on: ubuntu-latest
