@@ -20,7 +20,7 @@ jobs:
   push-uat:
     runs-on: ubuntu-latest
     environment: uat
-    needs: [create-tag]
+    needs: [build, create-tag]
     permissions:
       id-token: write
       contents: read
