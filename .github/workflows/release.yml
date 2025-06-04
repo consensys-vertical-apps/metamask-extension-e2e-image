@@ -29,7 +29,7 @@ jobs:
       - name: Push
         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@ecr-public
         with:
-          image_tag: ${{ needs.update-tag.outputs.create-tag }}
+          image_tag: ${{ needs.create-tag.outputs.tag }}
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
           public_ecr_repository: public.ecr.aws/y2l1v8k6/metamask-core-staging/metamask-extension-e2e
 
