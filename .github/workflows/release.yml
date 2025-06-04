@@ -8,9 +8,10 @@ on:
 
 jobs:
   build:
-    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.55.1
+    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.60.0
     with:
       github_advanced_security_enabled: true
+      kics_enabled: false
       trivy_ignore_failure: true
       aws_region: us-east-2
 
@@ -26,7 +27,7 @@ jobs:
       contents: read
     steps:
       - name: Push
-        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.55.1
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.60.0
         with:
           image_tag: ${{ needs.update-tag.outputs.tag }}
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
