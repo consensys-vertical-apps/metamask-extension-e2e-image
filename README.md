@@ -12,4 +12,3 @@ It includes:
 
 ```bash
 docker build --platform linux/amd64 -t metamask-extension-e2e .
-
