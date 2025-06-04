@@ -12,3 +12,8 @@ It includes:
 
 ```bash
 docker build --platform linux/amd64 -t metamask-extension-e2e .
+```
+
+## 🏷️ Tagging the Image
+Docker image tagging for release pipelines is currently done manually via the GitHub
+Tagging points to the latest commit on the main branch by default.
