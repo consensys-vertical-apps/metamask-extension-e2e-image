@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - init
+
+jobs:
+  build:
+    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.55.1
+    with:
+      github_advanced_security_enabled: true
+      trivy_ignore_failure: true
+      aws_region: us-east-2
+
+  create-tag:
+    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/create-eph-tag.yml@v0.60.0
+
+  push-uat:
+    runs-on: ubuntu-latest
+    environment: uat
+    needs: [create-tag]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Push
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.55.1
+        with:
+          image_tag: ${{ needs.update-tag.outputs.tag }}
+          aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
+          aws_region: us-east-2
+          ecr_repository: metamask-core-staging/sample-public-image
+
+#   push-prod:
+#     runs-on: ubuntu-latest
+#     environment: prd
+#     needs: [push-uat, update-tag]
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - name: Push
+#         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.55.1
+#         with:
+#           image_tag: ${{ needs.update-tag.outputs.tag }}
+#           aws_role: ${{ vars.PRD_AWS_EKS_ROLE_ARN }}
+#           aws_region: us-east-2
+#           ecr_repository: staking/prd/api-gateway
