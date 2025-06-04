@@ -11,7 +11,7 @@ jobs:
     uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.60.0
     with:
       github_advanced_security_enabled: true
-      kics_enabled: false
+      kics_enabled: false # Migrating existing configurations from CI to base-image, security findings should be addressed
       trivy_ignore_failure: true
       aws_region: us-east-2
 
@@ -27,12 +27,12 @@ jobs:
       contents: read
     steps:
       - name: Push
-        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.60.0
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@ecr-public
         with:
-          image_tag: ${{ needs.update-tag.outputs.tag }}
+          image_tag: ${{ needs.update-tag.outputs.create-tag }}
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
           aws_region: us-east-2
-          ecr_repository: metamask-core-staging/sample-public-image
+          public_ecr_repository: public.ecr.aws/y2l1v8k6/metamask-core-staging/metamask-extension-e2e
 
 #   push-prod:
 #     runs-on: ubuntu-latest
