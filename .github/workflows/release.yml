@@ -51,3 +51,5 @@ jobs:
           image_tag: ${{ github.ref_name }}
           aws_role: arn:aws:iam::363762752069:role/ecr-github-metamask-core-metamask-extension-e2e
           public_ecr_repository: public.ecr.aws/a6f6j9d3/metamask-core/metamask-extension-e2e
+
+
