@@ -31,7 +31,6 @@ jobs:
         with:
           image_tag: ${{ needs.update-tag.outputs.create-tag }}
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
-          aws_region: us-east-2
           public_ecr_repository: public.ecr.aws/y2l1v8k6/metamask-core-staging/metamask-extension-e2e
 
 #   push-prod:
