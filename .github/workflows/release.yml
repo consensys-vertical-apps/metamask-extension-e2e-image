@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.60.0
+    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v1.0.0
     with:
       github_advanced_security_enabled: true
       kics_enabled: false
@@ -18,7 +18,7 @@ jobs:
 
   create-tag:
     if: github.ref == 'refs/heads/main'
-    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/create-eph-tag.yml@v0.60.0
+    uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/create-eph-tag.yml@v1.0.0
 
     # Regression Testing
   # push-uat-private:
@@ -48,7 +48,7 @@ jobs:
       contents: read
     steps:
       - name: Push to Public ECR
-        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@multi-ecr-support
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v1.0.0
         with:
           image_tag: ${{ needs.create-tag.outputs.tag }}
           aws_region: us-east-1
@@ -66,7 +66,7 @@ jobs:
       contents: read
     steps:
       - name: Push to Public ECR
-        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@multi-ecr-support
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v1.0.0
         with:
           image_tag: ${{ github.ref_name }}
           aws_region: us-east-1
