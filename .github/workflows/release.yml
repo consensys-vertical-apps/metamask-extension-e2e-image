@@ -3,22 +3,25 @@ name: Release
 on:
   push:
     branches:
-      - main
-      - init
+      - '**'
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
     uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/docker-build-and-validate.yml@v0.60.0
     with:
       github_advanced_security_enabled: true
-      kics_enabled: false # Migrating existing configurations from CI to base-image, security findings should be addressed
+      kics_enabled: false
       trivy_ignore_failure: true
       aws_region: us-east-2
 
   create-tag:
+    if: github.ref == 'refs/heads/main'
     uses: consensys-vertical-apps/shared-services-workflows/.github/workflows/create-eph-tag.yml@v0.60.0
 
   push-uat:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: uat
     needs: [build, create-tag]
@@ -26,25 +29,25 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - name: Push
+      - name: Push to Public ECR (Ephemeral Tag)
         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@ecr-public
         with:
           image_tag: ${{ needs.create-tag.outputs.tag }}
           aws_role: arn:aws:iam::722264665990:role/ecr-github-metamask-core-staging-metamask-extension-e2e
           public_ecr_repository: public.ecr.aws/y2l1v8k6/metamask-core-staging/metamask-extension-e2e
 
-#   push-prod:
-#     runs-on: ubuntu-latest
-#     environment: prd
-#     needs: [push-uat, update-tag]
-#     permissions:
-#       id-token: write
-#       contents: read
-#     steps:
-#       - name: Push
-#         uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push@v0.55.1
-#         with:
-#           image_tag: ${{ needs.update-tag.outputs.tag }}
-#           aws_role: ${{ vars.PRD_AWS_EKS_ROLE_ARN }}
-#           aws_region: us-east-2
-#           ecr_repository: staking/prd/api-gateway
+  push-prod:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: prd
+    needs: [build]
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Push to Public ECR
+        uses: consensys-vertical-apps/shared-services-workflows/.github/actions/docker-push-ecr-public@ecr-public
+        with:
+          image_tag: ${{ github.ref_name }}
+          aws_role: arn:aws:iam::363762752069:role/ecr-github-metamask-core-metamask-extension-e2e
+          public_ecr_repository: public.ecr.aws/a6f6j9d3/metamask-core/metamask-extension-e2e
