@@ -14,10 +14,10 @@ It includes:
 
 ```bash
 # Latest version
-docker pull ghcr.io/consensys/metamask-extension-e2e-image:latest
+docker pull ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image:latest
 
 # Specific version
-docker pull ghcr.io/consensys/metamask-extension-e2e-image:v1.0.0
+docker pull ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image:v1.0.0
 ```
 
 ### Authentication
@@ -48,7 +48,7 @@ steps:
   - name: Run E2E tests
     run: |
       docker run --rm -v $PWD:/workspace \
-        ghcr.io/consensys/metamask-extension-e2e-image:latest \
+        ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image:latest \
         yarn test:e2e
 ```
 
@@ -58,7 +58,7 @@ steps:
 version: '3.8'
 services:
   e2e-tests:
-    image: ghcr.io/consensys/metamask-extension-e2e-image:latest
+    image: ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image:latest
     volumes:
       - ./:/workspace
     working_dir: /workspace
@@ -82,10 +82,6 @@ docker build --platform linux/amd64 -t metamask-extension-e2e-local .
 - `main` - Main branch builds
 - `<sha>` - Specific commit builds
 
-## 🔄 Migration from ECR
-
-If you're migrating from the old ECR image, see our [Migration Guide](CHANGELOG/migrations/ecr-to-ghcr-migration.md).
-
 ## 📋 Requirements
 
 - Docker
@@ -101,7 +97,7 @@ If you're migrating from the old ECR image, see our [Migration Guide](CHANGELOG/
 docker system info | grep -i registry
 
 # Test image access
-docker run --rm ghcr.io/consensys/metamask-extension-e2e-image:latest echo "Success"
+docker run --rm ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image:latest echo "Success"
 ```
 
 ### Common Solutions
@@ -109,12 +105,6 @@ docker run --rm ghcr.io/consensys/metamask-extension-e2e-image:latest echo "Succ
 1. **Permission Denied**: Ensure your GitHub token has `read:packages` permission
 2. **Image Not Found**: Check image name spelling and tag existence
 3. **Rate Limiting**: Use authenticated requests to avoid rate limits
-
-## 📚 Documentation
-
-- [Changelog](CHANGELOG/README.md)
-- [Migration Guide](CHANGELOG/migrations/ecr-to-ghcr-migration.md)
-- [Knowledge Base](CHANGELOG/knowledge-base/ghcr-setup.md)
 
 ## 🏗️ Development
 
@@ -126,5 +116,4 @@ This image is automatically built and pushed to GHCR on:
 ## 📞 Support
 
 - **Issues**: Open an issue in this repository
-- **Internal**: Contact via Slack #metamask-devops
-- **Documentation**: Check the [Knowledge Base](CHANGELOG/knowledge-base/ghcr-setup.md)
+- **Internal**: Contact via Slack #mmig-devsecops-random

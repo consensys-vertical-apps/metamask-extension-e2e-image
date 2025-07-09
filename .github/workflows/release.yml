@@ -29,7 +29,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/consensys/metamask-extension-e2e-image
+          images: ghcr.io/consensys-vertical-apps/metamask-extension-e2e-image
           tags: |
             type=ref,event=branch
             type=ref,event=tag
